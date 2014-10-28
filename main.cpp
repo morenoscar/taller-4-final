@@ -46,7 +46,8 @@ int main()
             string nomImagen, nomArchivo, propiedades;
             cin>>nomImagen>>nomArchivo;
             propiedades=huffmancito.generarArbol(nomImagen);
-            huffmancito.conversor(nomArchivo, propiedades);
+            vector<int>hola;
+            huffmancito.conversor(nomArchivo, propiedades,hola);
         }
         /*if(comando=="decodificar_archivo")
         {

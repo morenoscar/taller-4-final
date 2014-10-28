@@ -203,6 +203,18 @@ void ArbolBinarioHuffman<T>:: borrarArbol(NodoBinario<T> *inicio)
 }
 
 
+bool comp(NodoBinario<int>*a,NodoBinario<int>*b)
+{
+
+    if(a->obtenerFrec()<b->obtenerFrec())
+        return true;
+    if(a->obtenerFrec()>b->obtenerFrec())
+        return false;
+
+    return false;
+}
+
+
 template< class T>
 string ArbolBinarioHuffman<T>:: generarArbol(string nomArchivo)
 {
@@ -211,12 +223,14 @@ string ArbolBinarioHuffman<T>:: generarArbol(string nomArchivo)
     int pix;
     map<int,int> pix_frec;
     map<int,int> ::iterator it;
-    vector<pair<int,NodoBinario<int>*> > armando;
-    vector<pair<int,NodoBinario<int>*> > ::iterator it2;
+    vector<NodoBinario<int>* > armando;
+    vector<int> pixeles;
+
     lectura>>bas>>w>>h>>maxPix;
     retorno=w+" "+h+" "+maxPix;
     while(lectura>>pix)
     {
+        pixeles.push_back(pix);
         pix_frec[pix]++;
     }
     for(it=pix_frec.begin(); it!=pix_frec.end(); it++)
@@ -224,27 +238,31 @@ string ArbolBinarioHuffman<T>:: generarArbol(string nomArchivo)
         NodoBinario<int> *aux=new NodoBinario<int>();
         aux->fijarFrec(it->second);
         aux->fijarVal(it->first);
-        armando.push_back(make_pair(it->second, aux));
+        cout<<it->first<<"--- "<<it->second<<endl;
+        armando.push_back(aux);
     }
 
     while (armando.size()!=1)
     {
-        sort(armando.begin(),armando.end());
-        it2= armando.begin();
-        NodoBinario<int> *nodo1= it2->second;
-        it2++;
-        NodoBinario<int> *nodo2= it2->second;
+        sort(armando.begin(),armando.end(),comp);
+        for(int i=0; i<armando.size(); i++)
+        {
+            cout<<armando[i]->obtenerVal()<<" "<<armando[i]->obtenerFrec()<<"     ";
+        }
+        cout<<endl;
+        NodoBinario<int> *nodo1= armando[0];
+        NodoBinario<int> *nodo2= armando[1];
         NodoBinario<int> *nodoFinal= new NodoBinario<int>;
-        int aux=nodo1->obtenerFrec()+nodo2->obtenerFrec();
-        nodoFinal->fijarFrec(aux);
+        nodoFinal->fijarFrec(nodo1->obtenerFrec()+nodo2->obtenerFrec());
         nodoFinal->fijarVal(-1);
         nodoFinal->fijarHijoDer(nodo2);
         nodoFinal->fijarHijoIzq(nodo1);
         //cout<<nodo1->obtenerVal()<<" "<<nodo2->obtenerVal()<<" "<<nodoFinal->obtenerFrec()<<"----";
         armando.erase(armando.begin(), armando.begin()+2);
-        armando.push_back(make_pair(nodoFinal->obtenerFrec(),nodoFinal));
+        armando.push_back(nodoFinal);
     }
-    this->fijarRaiz(armando[0].second);
+    this->fijarRaiz(armando[0]);
+    //conversor(nomArchivo, retorno, pixeles);
     return retorno;
 
 }
@@ -261,16 +279,16 @@ void ArbolBinarioHuffman<T>::preOrdenConversor(NodoBinario<T> *inicio, vector<pa
 }
 
 template< class T>
-void ArbolBinarioHuffman<T>:: conversor(string nomArchivo,string propiedades)
+void ArbolBinarioHuffman<T>:: conversor(string nomArchivo,string propiedades, vector<int>&pixeles)
 {
     vector<pair<int,int> >info;
     ofstream salida(nomArchivo);
     salida<<propiedades<<endl;
     preOrdenConversor(datoRaiz(),info);
-    for(int i=0; i<info.size();i++){
+    for(int i=0; i<info.size(); i++)
+    {
         salida<<info[i].first<<" "<<info[i].second<<" ";
     }
     salida<<endl;
 }
-
 

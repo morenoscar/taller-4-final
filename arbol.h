@@ -26,7 +26,7 @@ public:
     void entre(NodoBinario<T> *inicio, T& valMin, T& valMax); //que es
     void borrarArbol(NodoBinario<T> *inicio);
     string generarArbol(string nomArchivo);
-    void conversor(string nomArchivo,string propiedades);
+    void conversor(string nomArchivo,string propiedades, vector<int>&pixeles);
     void preOrdenConversor(NodoBinario<T> *inicio, vector<pair<int,int> >&info);
 };
 
