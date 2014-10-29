@@ -9,19 +9,19 @@ int main()
     cin >> archivo1;
     cout << "Ingrese archivo 2 " << endl;
     cin >> archivo2;
-    ifstream ifs ("8.txt");
-    ifstream ifs1 ("a.huffman");
+    ifstream ifs ("sale.txt");
+    ifstream ifs1 ("img_08.huffman");
     ofstream cout("comprobador.txt");
     string aux,aux1,a,b;
     aux = aux1 = "";
     if (ifs1.good())
     {
         bool es=true;
-        while(ifs1>>b>>aux1&&ifs>>a>>aux){
-                if(aux!=aux1)
+        while(ifs1>>b&&ifs>>aux){
+                if(aux!=b)
                 {
-                    cout<<archivo1<<":"<<a<<" "<<aux<<endl;
-                    cout<<archivo2<<":"<<b<<" "<<aux1<<endl;
+                    cout<<archivo1<<":"<<aux<<endl;
+                    cout<<archivo2<<":"<<b<<endl;
                     cout<<endl;
                     es=false;
                 }

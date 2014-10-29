@@ -21,13 +21,14 @@ public:
     void nivelOrden(NodoBinario<T> *inicio);
     int altura(NodoBinario<T> *inicio);
     int tamano(NodoBinario<T> *inicio);
-    bool buscar(char val,string& res,NodoBinario<T> *inicio);
+    bool buscar(int val,string& res,NodoBinario<T> *inicio);
     bool insertarNodo(stringstream& val,NodoBinario<T> *n); //Modificar
     void entre(NodoBinario<T> *inicio, T& valMin, T& valMax); //que es
     void borrarArbol(NodoBinario<T> *inicio);
     string generarArbol(string nomArchivo);
     void conversor(string nomArchivo,string propiedades, vector<int>&pixeles);
     void preOrdenConversor(NodoBinario<T> *inicio, vector<pair<int,int> >&info);
+    string codificado(NodoBinario<T> *inicio, int pixel);
 };
 
 #include "arbol.hxx"

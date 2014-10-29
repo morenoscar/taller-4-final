@@ -109,23 +109,20 @@ int ArbolBinarioHuffman<T>::tamano(NodoBinario<T> *inicio)
     return(1+ti+td);
 }
 template< class T>
-bool ArbolBinarioHuffman<T>::buscar(char val,string& res,NodoBinario<T> *inicio)
+bool ArbolBinarioHuffman<T>::buscar(int val,string& res,NodoBinario<T> *inicio)
 {
+    if(inicio->obtenerVal()==val)
+        return true;//cout<<inicio->obtenerVal()<<" "<<val<<endl;
 
-    if(inicio->obtenerDato()==val)
-        return true;
-
-    if(inicio->obtenerHijoIzq()!=NULL&&buscar( val, res,inicio->obtenerHijoIzq()))
+    if(inicio->obtenerHijoIzq()!=NULL&&buscar(val, res,inicio->obtenerHijoIzq()))
     {
         res+='0';
-        return true;
+
     }
     if(inicio->obtenerHijoDer()!=NULL&&buscar( val, res,inicio->obtenerHijoDer()))
     {
         res+='1';
-        return true;
     }
-    return false;
 
 }
 
@@ -245,11 +242,6 @@ string ArbolBinarioHuffman<T>:: generarArbol(string nomArchivo)
     while (armando.size()!=1)
     {
         sort(armando.begin(),armando.end(),comp);
-        for(int i=0; i<armando.size(); i++)
-        {
-            cout<<armando[i]->obtenerVal()<<" "<<armando[i]->obtenerFrec()<<"     ";
-        }
-        cout<<endl;
         NodoBinario<int> *nodo1= armando[0];
         NodoBinario<int> *nodo2= armando[1];
         NodoBinario<int> *nodoFinal= new NodoBinario<int>;
@@ -262,7 +254,7 @@ string ArbolBinarioHuffman<T>:: generarArbol(string nomArchivo)
         armando.push_back(nodoFinal);
     }
     this->fijarRaiz(armando[0]);
-    //conversor(nomArchivo, retorno, pixeles);
+    conversor(nomArchivo,retorno,pixeles);
     return retorno;
 
 }
@@ -282,13 +274,34 @@ template< class T>
 void ArbolBinarioHuffman<T>:: conversor(string nomArchivo,string propiedades, vector<int>&pixeles)
 {
     vector<pair<int,int> >info;
-    ofstream salida(nomArchivo);
+    vector<string> dir(500,"*");
+    ofstream salida("sale.txt");
     salida<<propiedades<<endl;
     preOrdenConversor(datoRaiz(),info);
+
     for(int i=0; i<info.size(); i++)
     {
         salida<<info[i].first<<" "<<info[i].second<<" ";
     }
     salida<<endl;
-}
+    cout<<pixeles.size()<<endl<<endl;
+    for(int i=0; i<pixeles.size(); i++)
+    {
+        string res="";
+        if(dir[pixeles[i]]=="*")
+        {
+            //cout<<" SI SE PUEDE "<<endl;
+           // cout<<pixeles[i]<<endl;
+            buscar(pixeles[i],res,raiz);
+            salida<<res<<endl;
+            dir[pixeles[i]]=res;
+        }
+        else
+        {
+            //cout<<" ENTROOOO"<<endl;
+            salida<<dir[pixeles[i]]<<endl;
 
+        }
+        //system("pause");
+    }
+}
